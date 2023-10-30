@@ -1,0 +1,50 @@
+.chat-wrapper {
+  position: relative;
+
+  border: 2px solid black;
+  border-radius: 8px;
+  
+  position: absolute;
+  --distance-from-edge-y: 32px;
+  --distance-from-edge-x: 20vw;
+
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.5);
+
+  top: var(--distance-from-edge-y);
+  bottom: var(--distance-from-edge-y);
+  right: var(--distance-from-edge-x);
+  left: var(--distance-from-edge-x);
+
+  padding: 8px;
+  gap: 8px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.messages-wrapper {  
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: auto;
+
+  @media (max-width: 768px) {
+    border: none;
+    --distance-from-edge-y: 0px;
+    --distance-from-edge-x: 0px;
+  }
+}
+
+::-webkit-scrollbar {
+  background: transparent;
+  width: 20px;
+}
+
+ ::-webkit-scrollbar-thumb {
+  border-right:3px solid transparent;
+  border-left:3px solid transparent;
+  
+  background: #909090;
+  background-clip: padding-box;
+  border-radius: 100px;
+}

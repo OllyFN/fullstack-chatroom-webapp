@@ -1,0 +1,17 @@
+
+@font-face {
+  font-family: Roboto;
+  src:  local(Roboto),
+        url(./fonts/Roboto.woff2) format("woff2");
+  font-display: swap;
+}
+
+/* style normalization */
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+}
