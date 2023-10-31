@@ -1,8 +1,7 @@
-
 @font-face {
   font-family: Roboto;
   src:  local(Roboto),
-        url(./fonts/Roboto.woff2) format("woff2");
+        url(/Roboto.woff2) format("woff2");
   font-display: swap;
 }
 
@@ -12,6 +11,6 @@
   margin: 0;
 }
 
-body {
+* {
   font-family: Roboto, Arial, Helvetica, sans-serif;
 }

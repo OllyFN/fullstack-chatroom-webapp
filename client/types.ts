@@ -7,7 +7,6 @@ export interface chatProps {
   sendMessage: (userID: number, message:string) => void;
   newUser: (name:string, password:string) => Promise<number>;
   authenticateUser: (username:string, password:string) => Promise<number>;
-  messageRepeatLoad: (timeout:number) => Promise<messageType[]>
 }
 
 export interface messageProps {
