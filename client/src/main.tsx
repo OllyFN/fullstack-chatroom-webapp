@@ -21,7 +21,6 @@ const newUser = async (username: string, password: string) => {
   // Return the new user ID
   return newUserID;
 }
-
 const authenticateUser = async (username:string, password:string) => {
   // Emit an 'auth' event with the username and password to the socket
   socket.emit('auth', username, password)
