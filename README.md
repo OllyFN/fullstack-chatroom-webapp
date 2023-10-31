@@ -4,7 +4,7 @@
 
 | Role     | Tools                       |
 | -------- | --------------------------- |
-| Frontend | React & CSS Modules         |
+| Frontend | React                       |
 | Backend  | Express, Socket.io & MySQL2 |
 | Database | MySQL                       |
 

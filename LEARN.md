@@ -16,7 +16,6 @@ This project involved quite a few promises, and this was the go-to resource I us
 As I did remove the package.json file from the repo for easier navigation, I included all the packages (excluding packages installed from the Vite template) and tools I used here: <br />
 [Vite with React-TS template](https://vitejs.dev/) <br />
 [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) <br />
-[babel-plugin-react-css-modules](https://www.npmjs.com/package/babel-plugin-react-css-modules) <br />
 [express](https://www.npmjs.com/package/express) <br />
 [socket.io](https://www.npmjs.com/package/socket.io) <br />
 [socket.io-client](https://www.npmjs.com/package/socket.io-client) <br />
