@@ -1,10 +1,14 @@
-import { getMessages, sendMessage, newUser, authenticateUser } from './database.js'
+import { getMessages, sendMessage, newUser, authenticateUser, getHash } from './database.js'
 import express from 'express'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
+import bcrypt from 'bcrypt'
 
 // This is how many most recent messages a newly connected client will load
 const SHOW_MESSAGE_AMOUNT = 10
+
+// Used to hash passwords
+const SALT_ROUNDS = 10
 
 // Server init
 const app = express()
@@ -24,18 +28,25 @@ app.get('/messages', async (req, res) => {
   // Send the new messages as the response
   res.send(newMessages);
 });
+
 // socket.io connection event
 io.on('connection', (socket) => {
 
   // Handle 'auth' event (invoked on sign up or login)
   socket.on('auth', async (username, password) => {
+    // Get the hash from the database (returns an array with the hashed password or empty if username isnt registered)
+    const userData = await getHash(username).then(res => res[0][0])
+    if (userData.length==0) { return -1 }
+    
     // Check if the credentials are correct
-    const auth = await authenticateUser(username, password).then(res => res[0][0]);
-
-    // Emit 'auth response' event with the user ID or -1 if authentication failed
-    io.to(socket.id).emit('auth response', auth.length === 0 ? -1 : auth[0].id);
+    bcrypt.compare(password, userData[0].passwordHash, (err, res) => {
+      // if the comparasion failed, res returns false
+      // if the comparasion errored or res is false, we return -1
+      const auth = (err || res==false) ? -1 : userData[0].id
+      // Emit 'auth response' event with the user ID or -1 if authentication failed
+      io.to(socket.id).emit('auth response', auth);
+    });
   });
-
   // Handle 'new message' event with the message data as the arguments
   socket.on('new message', async (userid, message) => {
     // Send the new message to all connected clients
@@ -45,11 +56,16 @@ io.on('connection', (socket) => {
   });
 
   // Handle 'new user' event with credentials as arguments
-  socket.on('new user', async (username, password) => {
+  socket.on('new user', (username, password) => {
     try {
       // Register a new user
-      const newUserID = await newUser(username, password);
-      io.to(socket.id).emit('new user id', newUserID[0][0][0].newUserID);
+      bcrypt.hash(password, SALT_ROUNDS, async (err, hash) => {
+        if (err) { throw err }  // Errors handled by using try catch
+          // Store hashed password in database
+          const newUserID = await newUser(username, hash);
+          // Send the new user id to the client
+          io.to(socket.id).emit('new user id', newUserID[0][0][0].newUserID);
+      });
     } catch (err) { // I never yet had an error while registering a new user so this is just in case
       // Emit 'new user error' event with the error code or 'Unknown error'
       io.to(socket.id).emit('new user error', err?.code ?? 'Unknown error');

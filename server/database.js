@@ -22,5 +22,8 @@ export const sendMessage = async (userId, message) => await pool.query('CALL sen
 // Register a new user in the database
 export const newUser = (username, password) => pool.query('CALL newUser(?,?)', [username, password], errorHandling);
 
+// Get the hashed password from the database
+export const getHash = async (username) => await pool.query('CALL getHash(?)', [username], errorHandling);
+
 // Authenticate a user in the database
 export const authenticateUser = (username, password) => pool.query('CALL authenticateUser(?,?)', [username, password], errorHandling);
